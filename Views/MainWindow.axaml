@@ -1,0 +1,319 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ZTool.ViewModels"
+        xmlns:models="using:ZTool.Models"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="768" d:DesignHeight="320"
+        x:Class="ZTool.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="ZTool"
+        Width="768"
+        SizeToContent="Height"
+        WindowDecorations="None"
+        TransparencyLevelHint="Blur"
+        Background="Transparent"
+        CanResize="False"
+        ShowInTaskbar="False"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <Window.Styles>
+        <!-- The query has no box. The slab is the field. -->
+        <Style Selector="TextBox.query">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="FontFamily" Value="{StaticResource Font.Query}" />
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.Ink}" />
+            <Setter Property="CaretBrush" Value="{StaticResource Brush.Signal}" />
+            <Setter Property="SelectionBrush" Value="#33FF4D2E" />
+            <Setter Property="Watermark" Value="搜索应用、文件或命令" />
+        </Style>
+
+        <Style Selector="TextBox.query:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BoxShadow" Value="none" />
+        </Style>
+
+        <Style Selector="TextBlock.meta">
+            <Setter Property="FontFamily" Value="{StaticResource Font.Meta}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.InkMuted}" />
+        </Style>
+
+        <Style Selector="Border.keycap">
+            <Setter Property="Background" Value="{StaticResource Brush.Keycap}" />
+            <Setter Property="BorderBrush" Value="{StaticResource Brush.Hairline}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Padding" Value="8,3" />
+        </Style>
+
+        <Style Selector="Border.keycap TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource Font.Meta}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.InkMuted}" />
+        </Style>
+
+        <!-- Result rows: no chrome, just type and one Signal bar when picked. -->
+        <Style Selector="ListBox.results">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        </Style>
+
+        <Style Selector="ListBox.results ScrollViewer">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style Selector="ListBox.results ListBoxItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="10,1" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border x:Name="Row"
+                            Background="Transparent"
+                            CornerRadius="10"
+                            Padding="12,9">
+                        <Grid ColumnDefinitions="3,*">
+                            <Border x:Name="SignalBar"
+                                    Width="2.5"
+                                    CornerRadius="2"
+                                    VerticalAlignment="Stretch"
+                                    Background="{StaticResource Brush.Signal}"
+                                    Opacity="0" />
+                            <ContentPresenter Grid.Column="1"
+                                              Margin="13,0,0,0"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="ListBox.results ListBoxItem:pointerover /template/ Border#Row">
+            <Setter Property="Background" Value="#0A16181D" />
+        </Style>
+
+        <Style Selector="ListBox.results ListBoxItem:selected /template/ Border#Row">
+            <Setter Property="Background" Value="#0FFF4D2E" />
+        </Style>
+
+        <Style Selector="ListBox.results ListBoxItem:selected /template/ Border#SignalBar">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+
+        <Style Selector="Border.mark">
+            <Setter Property="Width" Value="28" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Background" Value="{StaticResource Brush.Keycap}" />
+        </Style>
+
+        <Style Selector="Border.mark TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource Font.Meta}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.InkMuted}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="TextBlock.title">
+            <Setter Property="FontFamily" Value="{StaticResource Font.Query}" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.Ink}" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <Style Selector="TextBlock.sub">
+            <Setter Property="FontFamily" Value="{StaticResource Font.Meta}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.InkMuted}" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+        </Style>
+
+        <!-- The Enter hint belongs to the row you are about to take. -->
+        <Style Selector="Border.runhint">
+            <Setter Property="Opacity" Value="0" />
+        </Style>
+
+        <Style Selector="ListBox.results ListBoxItem:selected Border.runhint">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+
+        <!-- The row's own badge — a pinned history entry, for instance. -->
+        <Style Selector="TextBlock.marker">
+            <Setter Property="FontFamily" Value="{StaticResource Font.Meta}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.Signal}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- First index build. Signal is the palette's one live colour, so it
+             is also the one that is allowed to move. -->
+        <Style Selector="ProgressBar.indexbar">
+            <Setter Property="Height" Value="2" />
+            <Setter Property="MinHeight" Value="2" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.Signal}" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </Window.Styles>
+
+    <!-- Outer margin gives the shadow room to render outside the slab. -->
+    <Grid Margin="24">
+        <Border x:Name="Slab"
+                Background="{StaticResource Brush.Surface}"
+                CornerRadius="18"
+                BoxShadow="0 16 40 0 #1A000000, 0 2 10 0 #14000000"
+                PointerPressed="OnSlabPointerPressed">
+
+            <!-- Inner slab clips the index bar to the rounded corners. The
+                 shadow stays on the border above so the clip cannot eat it. -->
+            <Border CornerRadius="18" ClipToBounds="True">
+                <Panel>
+                    <Grid RowDefinitions="Auto,1,Auto,1,Auto">
+
+                        <!-- Query row: prompt mark + borderless input -->
+                        <Grid ColumnDefinitions="Auto,*" Margin="22,18,22,12">
+                            <TextBlock x:Name="PromptMark"
+                                       Text="&#x203A;"
+                                       FontFamily="{StaticResource Font.Query}"
+                                       FontSize="32"
+                                       FontWeight="Light"
+                                       Foreground="{StaticResource Brush.InkMuted}"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,14,0" />
+                            <TextBox x:Name="QueryBox"
+                                     Grid.Column="1"
+                                     Classes="query"
+                                     Text="{Binding Query, Mode=TwoWay}"
+                                     VerticalAlignment="Center"
+                                     GotFocus="OnQueryFocusChanged"
+                                     LostFocus="OnQueryFocusChanged" />
+                        </Grid>
+
+                        <Border Grid.Row="1" Background="{StaticResource Brush.Hairline}" />
+
+                        <!-- Matches. Quiet until one of them is the live one. -->
+                        <ListBox x:Name="ResultsList"
+                                 Grid.Row="2"
+                                 Classes="results"
+                                 ItemsSource="{Binding Results}"
+                                 SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                                 IsVisible="{Binding HasResults}"
+                                 Focusable="False"
+                                 Tapped="OnResultTapped"
+                                 MaxHeight="{Binding ListMaxHeight}"
+                                 Margin="0,8,0,8">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:PanelRow">
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <!-- The mark tile stays for every row: it is
+                                             the left edge's rhythm. An app gets its
+                                             icon on it; the rest get their letter. -->
+                                        <Border Classes="mark">
+                                            <Panel>
+                                                <TextBlock Text="{Binding Glyph}" IsVisible="{Binding !HasIcon}" />
+                                                <Image Source="{Binding Icon}"
+                                                       Width="20"
+                                                       Height="20"
+                                                       Stretch="Uniform"
+                                                       IsVisible="{Binding HasIcon}" />
+                                            </Panel>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1" Margin="13,0,0,0">
+                                            <TextBlock Classes="title" Text="{Binding Title}" />
+                                            <TextBlock Classes="sub" Text="{Binding Subtitle}" />
+                                        </StackPanel>
+
+                                        <!-- The marker is the row's own badge and stays;
+                                             the Enter hint belongs to the row you are
+                                             about to take. -->
+                                        <StackPanel Grid.Column="2"
+                                                    Orientation="Horizontal"
+                                                    Spacing="10"
+                                                    VerticalAlignment="Center"
+                                                    Margin="16,0,2,0">
+                                            <TextBlock Classes="marker"
+                                                       Text="{Binding Marker}"
+                                                       IsVisible="{Binding HasMarker}" />
+                                            <Border Classes="keycap runhint">
+                                                <TextBlock Text="Enter" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <Border Grid.Row="3"
+                                Background="{StaticResource Brush.Hairline}"
+                                IsVisible="{Binding HasResults}" />
+
+                        <!-- Meta row: live readout + either the plugin's own control
+                             or the hotkey that summons this tool. -->
+                        <Grid Grid.Row="4" ColumnDefinitions="*,Auto" Margin="22,11,18,15">
+                            <TextBlock Grid.Column="0"
+                                       Classes="meta"
+                                       Text="{Binding QueryStatus}"
+                                       VerticalAlignment="Center" />
+                            <ContentControl Grid.Column="1"
+                                            Content="{Binding Footer}"
+                                            IsVisible="{Binding HasFooter}"
+                                            VerticalAlignment="Center" />
+                            <StackPanel Grid.Column="1"
+                                        Orientation="Horizontal"
+                                        Spacing="6"
+                                        VerticalAlignment="Center"
+                                        IsVisible="{Binding HasKeycaps}">
+                                <Border Classes="keycap">
+                                    <TextBlock Text="{Binding HotkeyModifier}" />
+                                </Border>
+                                <Border Classes="keycap">
+                                    <TextBlock Text="{Binding HotkeyKey}" />
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                    </Grid>
+
+                    <!-- First index build. Signal is the palette's one live
+                         colour, so it is also the only one allowed to move. -->
+                    <ProgressBar Classes="indexbar"
+                                 IsIndeterminate="True"
+                                 IsVisible="{Binding IsIndexing}" />
+                </Panel>
+            </Border>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,27 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ZTool.App"
+             xmlns:local="using:ZTool"
+             RequestedThemeVariant="Light">
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <!-- Palette: Paper & Graphite. One Signal mark, everything else quiet. -->
+    <Application.Resources>
+        <SolidColorBrush x:Key="Brush.Surface" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="Brush.Ink" Color="#16181D" />
+        <SolidColorBrush x:Key="Brush.InkMuted" Color="#6B7280" />
+        <SolidColorBrush x:Key="Brush.Hairline" Color="#E2E5EA" />
+        <SolidColorBrush x:Key="Brush.Keycap" Color="#F4F5F7" />
+        <SolidColorBrush x:Key="Brush.Signal" Color="#FF4D2E" />
+
+        <FontFamily x:Key="Font.Query">Inter</FontFamily>
+        <FontFamily x:Key="Font.Meta">Consolas, Cascadia Mono, monospace</FontFamily>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>

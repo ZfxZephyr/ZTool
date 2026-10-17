@@ -1,0 +1,15 @@
+# Build output
+bin/
+obj/
+publish/
+TestResults/
+
+# IDE
+.vs/
+.idea/
+*.user
+
+# Scratch: the plan is the record, the scaffolding is not
+.scratch/*
+!.scratch/milestone-1/
+!.scratch/m2-planning/
