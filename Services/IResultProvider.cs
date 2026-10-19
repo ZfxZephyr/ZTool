@@ -11,4 +11,15 @@ namespace ZTool.Services;
 public interface IResultProvider
 {
     IEnumerable<SearchResult> Candidates();
+
+    /// <summary>
+    /// The query about to be scored. A provider backed by an external index —
+    /// Everything, for one — uses this to go and fetch candidates, because its
+    /// whole value is filtering millions of rows down to a handful per query.
+    /// A provider with a fixed set ignores it, which is why it defaults to a
+    /// no-op and the Start Menu and command sources never mention it.
+    /// </summary>
+    void Prime(string query)
+    {
+    }
 }

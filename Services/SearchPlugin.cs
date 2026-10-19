@@ -49,6 +49,10 @@ public sealed class SearchPlugin : IPanelPlugin
                 })),
             _apps,
             _files);
+
+        // A file query is answered tens of milliseconds after the keystroke.
+        // When it lands, the palette has to redraw with the rows it was missing.
+        _files.Changed += () => Changed?.Invoke();
     }
 
     public string Title => "搜索";
@@ -111,5 +115,6 @@ public sealed class SearchPlugin : IPanelPlugin
 
     public void Dispose()
     {
+        _files.Dispose();
     }
 }

@@ -34,6 +34,13 @@ public sealed class SearchService
         var needle = query.Trim();
         var hits = new List<(SearchResult Item, double Score)>();
 
+        // Fetch before scoring: a provider that answers from an external index
+        // has nothing to hand over until it has seen the query.
+        foreach (var provider in _providers)
+        {
+            provider.Prime(needle);
+        }
+
         foreach (var provider in _providers)
         {
             foreach (var item in provider.Candidates())
