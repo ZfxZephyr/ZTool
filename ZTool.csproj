@@ -6,6 +6,13 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Explorer's Details panel and the taskbar tooltip. -->
+    <Product>ZTool</Product>
+    <Description>启动器与剪贴板历史</Description>
+    <Version>0.2.0</Version>
+    <FileVersion>0.2.0.0</FileVersion>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <ApplicationIcon>Assets\ztool.ico</ApplicationIcon>
     <!-- The test project is a folder beside this one, and the default globs
          would otherwise pull its sources into the app. Scratch probes are the
          same story. -->
