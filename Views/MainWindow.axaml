@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="768" d:DesignHeight="320"
         x:Class="ZTool.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/ztool.ico"
         Title="ZTool"
         Width="768"
         SizeToContent="Height"

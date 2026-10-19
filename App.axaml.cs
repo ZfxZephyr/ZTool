@@ -82,7 +82,7 @@ public partial class App : Application
     {
         var icon = new TrayIcon
         {
-            Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://ZTool/Assets/avalonia-logo.ico"))),
+            Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://ZTool/Assets/ztool.ico"))),
             ToolTipText = "ZTool",
         };
 
